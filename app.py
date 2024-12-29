@@ -6,8 +6,8 @@ import os
 # Inisialisasi Flask
 app = Flask(__name__)
 
-# Konfigurasi Database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///payments.db'
+# Konfigurasi Database (menggunakan nama baru)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///payments_new.db'  # Ubah nama database
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Konfigurasi Folder Upload
@@ -22,19 +22,21 @@ app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = 'sandipranata1802@gmail.com' 
 app.config['MAIL_PASSWORD'] = 'jbxi cjuh skdk augz' 
 
-# Inisialisasi Database dan Mail c
+# Inisialisasi Database dan Mail
 db = SQLAlchemy(app)
 mail = Mail(app)
 
 # Model Database
 class Payment(db.Model):
+    __tablename__ = 'payments'  # Menentukan nama tabel secara eksplisit
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
+    phone = db.Column(db.String(20), nullable=False)
+    spice_level = db.Column(db.String(20), nullable=False)
     address = db.Column(db.Text, nullable=False)
     proof_path = db.Column(db.String(200), nullable=False)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
 
-# Endpoint Form dan Penyimpanan
 @app.route('/')
 def index():
     return render_template('form.html')
@@ -44,6 +46,8 @@ def submit_payment():
     if request.method == 'POST':
         # Ambil data dari form
         name = request.form['name']
+        phone = request.form['phone']
+        spice_level = request.form['spice_level']
         address = request.form['address']
         payment_proof = request.files['paymentProof']
         
@@ -53,7 +57,13 @@ def submit_payment():
         payment_proof.save(proof_path)
         
         # Simpan data ke database
-        new_payment = Payment(name=name, address=address, proof_path=proof_path)
+        new_payment = Payment(
+            name=name,
+            phone=phone,
+            spice_level=spice_level,
+            address=address,
+            proof_path=proof_path
+        )
         db.session.add(new_payment)
         db.session.commit()
         
@@ -61,21 +71,23 @@ def submit_payment():
         msg = Message(
             'Bukti Pembayaran Baru',
             sender=app.config['MAIL_USERNAME'],
-            recipients=['sandipranata1802@gmail.com']  # Email Anda
+            recipients=['sandipranata1802@gmail.com']
         )
         msg.body = f"""
         Pembayaran baru telah diterima:
         
-        Nama: {name}
-        Alamat: {address}
-        Bukti Pembayaran: {proof_filename}
+        Nama : {name}
+        Nomor WhatsApp : {phone}
+        Level Pedas: {spice_level}
+        Catatan : {address}
+        Bukti Pembayaran : {proof_filename}
         
-        Cek folder uploads/ untuk bukti pembayaran.
+        Cek Dompet Digital/ untuk bukti pembayaran.
         """
         
         # Menambahkan file bukti pembayaran sebagai lampiran
         with app.open_resource(proof_path) as fp:
-            msg.attach(proof_filename, 'image/jpeg', fp.read())  # Menyesuaikan jenis MIME dengan file yang diunggah
+            msg.attach(proof_filename, 'image/jpeg', fp.read())
         
         mail.send(msg)
         
@@ -86,5 +98,6 @@ def submit_payment():
 # Jalankan aplikasi
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()  # Membuat tabel database jika belum ada
+        db.drop_all()  # Hapus semua tabel yang ada
+        db.create_all()  # Buat tabel baru
     app.run(debug=True)

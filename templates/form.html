@@ -1,58 +1,504 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Pembayaran</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SEBLAK Cinta Rasa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        h1 {
-            color: #333;
-        }
-        form {
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        label {
-            font-weight: bold;
-            margin-top: 10px;
-            display: block;
-        }
-        input, textarea, button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
+      .menu-overlay {
+        transition: all 0.3s ease-in-out;
+      }
+
+      .hamburger-line {
+        transition: all 0.3s ease-in-out;
+      }
+
+      .menu-open .hamburger-top {
+        transform: rotate(45deg) translateY(6px);
+      }
+
+      .menu-open .hamburger-middle {
+        opacity: 0;
+      }
+
+      .menu-open .hamburger-bottom {
+        transform: rotate(-45deg) translateY(-6px);
+      }
     </style>
-</head>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 flex items-center justify-between p-4 bg-white border-b shadow-sm">
+      <a href="/" class="text-xl font-bold z-10">
+        <span class="text-black">SEBLAK</span>
+        <span class="text-red-600">Cinta Rasa</span>
+      </a>
+
+      <!-- Hamburger Menu Button -->
+       
+      <button
+        id="menu-btn"
+        class="lg:hidden flex flex-col justify-center items-center w-8 h-8 z-20"
+      >
+        <span
+          class="hamburger-line w-6 h-0.5 bg-black mb-1 hamburger-top"
+        ></span>
+        <span
+          class="hamburger-line w-6 h-0.5 bg-black mb-1 hamburger-middle"
+        ></span>
+        <span class="hamburger-line w-6 h-0.5 bg-black hamburger-bottom"></span>
+      </button>
+
+      <!-- Mobile Menu Overlay -->
+      <div
+        id="menu-overlay"
+        class="menu-overlay fixed inset-0 bg-black bg-opacity-50 z-10 hidden"
+      >
+        <nav
+          class="fixed right-0 top-0 h-full w-64 bg-white transform translate-x-full transition-transform duration-300 ease-in-out"
+        >
+          <div class="flex flex-col p-8 space-y-4">
+            <a
+              href="/index.html"
+              class="category-btn text-red-600 px-4 py-2 rounded-full  ">
+              <i class="fas fa-home"></i> Home
+            </a>
+            <a
+              href="/halaman/produk.html"
+              class="hover:text-red-600 text-lg flex items-center gap-2"
+            >
+              <i class="fas fa-utensils"></i> Product
+            </a>
+            <!-- Icon Cart di Navbar -->
+            <!-- Icon Cart di Navbar -->
+            <a
+              href="/halaman/keranjang.html"
+              class="hover:text-red-600 flex items-center gap-2 relative"
+            >
+              <i class="fas fa-shopping-cart"></i> Cart
+              <span
+                id="cart-count-navbar"
+                class="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center hidden"
+              >
+              </span>
+            </a>
+
+            <a
+              href="/halaman/lokasi.html"
+              class="hover:text-red-600 text-lg flex items-center gap-2"
+            >
+              <i class="fas fa-map-marker-alt"></i> Location
+            </a>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden lg:flex gap-6">
+        <a href="./index.html" id="popular" class="category-btn text-red-600 px-4 py-2 rounded-full ">
+          <i class="fas fa-home"></i> Home
+        </a>
+        <a href="/halaman/produk.html" class="hover:text-red-600 flex items-center gap-2">
+          <i class="fas fa-utensils"></i> Product
+        </a>
+        <!-- Icon Cart di Navbar -->
+        <!-- Icon Cart di Navbar -->
+        <a
+          href="/halaman/keranjang.html"
+          class="hover:text-red-600 flex items-center gap-2 relative"
+        >
+          <i class="fas fa-shopping-cart"></i> Cart
+          <span
+            id="cart-count-navbar"
+            class="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center hidden"
+          >
+          </span>
+        </a>
+
+        <a href="/halaman/lokasi.html" class="hover:text-red-600 flex items-center gap-2">
+          <i class="fas fa-map-marker-alt"></i> Location
+        </a>
+      </nav>
+    </header>
 <body>
-    <h1>Form Pembayaran</h1>
-    <form action="/submit-payment" method="POST" enctype="multipart/form-data">
-        <label for="name">Nama:</label>
-        <input type="text" id="name" name="name" placeholder="Masukkan nama Anda" required>
-        
-        <label for="address">Alamat:</label>
-        <textarea id="address" name="address" placeholder="Masukkan alamat lengkap Anda" required></textarea>
-        
-        <label for="paymentProof">Bukti Pembayaran:</label>
-        <input type="file" id="paymentProof" name="paymentProof" required>
-        
-        <button type="submit">Kirim</button>
+  <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-8">
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-center text-gray-900">Form Pembayaran</h1>
+    </div>
+
+    <form action="/submit-payment" method="POST" enctype="multipart/form-data" class="space-y-6">
+        <div>
+            <label for="name" class="block text-sm font-medium text-gray-700">Nama</label>
+            <input 
+                type="text" 
+                id="name" 
+                name="name" 
+                placeholder="Masukkan nama Anda"
+                required
+                class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+        </div>
+
+        <div>
+            <label for="address" class="block text-sm font-medium text-gray-700">Catatan :</label>
+            <textarea 
+                id="address" 
+                name="address" 
+                rows="4" 
+                placeholder="Tambahan catatan pesanan secara detail terkait makanan yang anda pesan...  "
+                required
+                class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            ></textarea>
+        </div>
+        <!-- Add these fields after the name input and before the address textarea -->
+<div>
+  <label for="phone" class="block text-sm font-medium text-gray-700">Nomor WhatsApp</label>
+  <input 
+      type="tel" 
+      id="phone" 
+      name="phone" 
+      placeholder="Masukkan nomor WhatsApp Anda"
+      required
+      class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+  >
+</div>
+
+<div>
+  <label for="spice_level" class="block text-sm font-medium text-gray-700">Level Pedas</label>
+  <select 
+      id="spice_level" 
+      name="spice_level" 
+      required
+      class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+  >
+      <option value="">Pilih Level Pedas</option>
+      <option value="1">Level 1 (Tidak Pedas)</option>
+      <option value="2">Level 2 (Sedang)</option>
+      <option value="3">Level 3 (Pedas)</option>
+      <option value="4">Level 4 (Sangat Pedas)</option>
+      <option value="5">Level 5 (Extra Pedas)</option>
+  </select>
+</div>
+         <div class="space-y-4">
+          <h2 class="text-lg sm:text-xl text-red-600 font-bold">Pilih Metode Pembayaran</h2>
+          <div class="grid grid-cols-2 gap-4">
+              <button type="button" onclick="selectPayment('qris')" id="qrisButton"
+                  class="flex flex-col sm:flex-row items-center justify-center gap-2 p-3 sm:p-4 border rounded-lg hover:bg-gray-50">
+                  <i class="fas fa-qrcode w-6 h-6"></i>
+                  <span>QRis</span>
+              </button>
+              <button type="button" onclick="selectPayment('tunai')" id="tunaiButton"
+                  class="flex flex-col sm:flex-row items-center justify-center gap-2 p-3 sm:p-4 border rounded-lg hover:bg-gray-50">
+                  <i class="fas fa-wallet w-6 h-6"></i>
+                  <span>Tunai</span>
+              </button>
+          </div>
+      </div>
+
+      <!-- QRIS Image Section - Hidden by default -->
+      <div id="qrisSection" class="text-center space-y-4 hidden">
+        <h3 class="font-medium">Scan QRIS untuk Pembayaran</h3>
+        <img src="{{ url_for('static', filename='image/sandi.png') }}" alt="QRIS Payment Code" class="mx-auto max-w-xs">
+        <p class="text-sm text-gray-600">A/N SEBLAK Cinta Rasa</p>
+      </div>
+
+    <script>
+      // Wait for DOM to be fully loaded
+      document.addEventListener('DOMContentLoaded', function() {
+        // Payment method selection
+        window.selectPayment = function(method) {
+          const qrisButton = document.getElementById('qrisButton');
+          const tunaiButton = document.getElementById('tunaiButton');
+          const qrisSection = document.getElementById('qrisSection');
+          
+          // Check if elements exist before trying to access them
+          if (!qrisButton || !tunaiButton || !qrisSection) {
+            console.error('Required elements not found');
+            return;
+          }
+          
+          // Reset button styles
+          qrisButton.classList.remove('bg-gray-100', 'border-red-600');
+          tunaiButton.classList.remove('bg-gray-100', 'border-red-600');
+          
+          if (method === 'qris') {
+            qrisButton.classList.add('bg-gray-100', 'border-red-600');
+            qrisSection.classList.remove('hidden'); // Show QRIS section
+          } else if (method === 'tunai') {
+            tunaiButton.classList.add('bg-gray-100', 'border-red-600');
+            qrisSection.classList.add('hidden'); // Hide QRIS section
+          }
+        }
+      });
+    </script>
+    <div>
+      <label for="paymentProof" class="block text-sm font-medium text-gray-700">Bukti Pembayaran</label>
+      <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+          <div class="space-y-1 text-center" id="upload-container">
+              <!-- Upload icon dan teks -->
+              <div id="upload-placeholder">
+                  <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                      <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  <div class="flex text-sm text-gray-600 justify-center">
+                      <label for="paymentProof" class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
+                          <span>Upload file</span>
+                          <input id="paymentProof" name="paymentProof" type="file" class="sr-only" required accept="image/*" onchange="previewImage(event)">
+                      </label>
+                      <p class="pl-1">atau drag and drop</p>
+                  </div>
+                  <p class="text-xs text-gray-500">PNG, JPG, GIF sampai 10MB</p>
+              </div>
+              
+              <!-- Preview gambar -->
+              <div id="preview-container" class="hidden mt-4">
+                  <img id="preview-image" class="mx-auto max-h-48 rounded-lg shadow-lg" src="" alt="Preview">
+                  <button type="button" onclick="removeImage()" class="mt-2 text-sm text-red-600 hover:text-red-500">
+                      Hapus Gambar
+                  </button>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  <script>
+  function previewImage(event) {
+      const file = event.target.files[0];
+      if (file) {
+          // Validasi tipe file
+          if (!file.type.startsWith('image/')) {
+              alert('Mohon upload file gambar (PNG, JPG, atau GIF)');
+              event.target.value = '';
+              return;
+          }
+          
+          // Validasi ukuran file (10MB = 10 * 1024 * 1024 bytes)
+          if (file.size > 10 * 1024 * 1024) {
+              alert('Ukuran file terlalu besar. Maksimum 10MB.');
+              event.target.value = '';
+              return;
+          }
+  
+          const reader = new FileReader();
+          reader.onload = function(e) {
+              document.getElementById('preview-image').src = e.target.result;
+              document.getElementById('upload-placeholder').classList.add('hidden');
+              document.getElementById('preview-container').classList.remove('hidden');
+          }
+          reader.readAsDataURL(file);
+      }
+  }
+  
+  function removeImage() {
+      document.getElementById('paymentProof').value = ''; // Reset input file
+      document.getElementById('preview-image').src = ''; // Hapus preview
+      document.getElementById('preview-container').classList.add('hidden');
+      document.getElementById('upload-placeholder').classList.remove('hidden');
+  }
+  
+  // Drag and drop functionality
+  const uploadContainer = document.getElementById('upload-container');
+  
+  uploadContainer.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadContainer.classList.add('border-blue-500');
+  });
+  
+  uploadContainer.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      uploadContainer.classList.remove('border-blue-500');
+  });
+  
+  uploadContainer.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadContainer.classList.remove('border-blue-500');
+      
+      const file = e.dataTransfer.files[0];
+      if (file) {
+          const input = document.getElementById('paymentProof');
+          input.files = e.dataTransfer.files;
+          const event = new Event('change', { bubbles: true });
+          input.dispatchEvent(event);
+      }
+  });
+  </script>
+            <button 
+                type="submit"
+                class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+                Kirim
+            </button>
+        </div>
     </form>
+
+    <script>
+      
+
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+          if (document.getElementById('uploadSection').classList.contains('hidden')) return;
+          
+          const bukti = document.getElementById('dropzone-file').files[0];
+          if (!bukti) {
+              alert('Harap unggah bukti pembayaran untuk melanjutkan.');
+              e.preventDefault();
+              return;
+          }
+      });
+      
+        document.getElementById('dropzone-file').addEventListener('change', function(e) {
+          const fileName = e.target.files[0]?.name;
+          if (fileName) {
+              document.getElementById('selected-file').textContent = `File terpilih: ${fileName}`;
+          }
+      });
+      function formatHarga(harga) {
+          return `Rp ${harga.toLocaleString('id-ID')}`;
+      }
+      
+      function tampilkanRingkasanKeranjang() {
+          const keranjang = JSON.parse(localStorage.getItem('cart')) || [];
+          const containerItem = document.getElementById('cart-items-summary');
+          const biayaLayanan = 2000;
+          
+          // Bersihkan item yang ada
+          containerItem.innerHTML = '';
+          
+          // Tampilkan item keranjang
+          keranjang.forEach(item => {
+              const elementItem = document.createElement('div');
+              elementItem.className = 'flex justify-between items-center';
+              elementItem.innerHTML = `
+                  <span>${item.name} x ${item.quantity}</span>
+                  <span>${formatHarga(item.price * item.quantity)}</span>
+              `;
+              containerItem.appendChild(elementItem);
+          });
+          
+          // Hitung dan tampilkan total
+          const subtotal = keranjang.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+          const total = subtotal + biayaLayanan;
+          
+          document.getElementById('subtotal-summary').textContent = formatHarga(subtotal);
+          document.getElementById('total-summary').textContent = formatHarga(total);
+      }
+      
+      // Jalankan fungsi saat halaman dimuat
+      document.addEventListener('DOMContentLoaded', tampilkanRingkasanKeranjang);
+      </script>
+          <!-- Footer -->
+          <footer class="mt-8 space-y-4">
+              <div class="text-center px-4">
+                  <h3 class="font-bold flex items-center justify-center gap-2">
+                      <i class="fas fa-clock text-red-600"></i> Jam Operasional: 08:00-22:00
+                  </h3>
+              </div>
+              <div class="text-center px-4">
+                  <h3 class="font-bold mb-4 flex items-center justify-center gap-2">
+                      <i class="fas fa-phone text-red-600"></i> HUBUNGI KAMI
+                  </h3>
+                  <div class="flex justify-center gap-4">
+                      <a href="#" class="hover:opacity-75 transform hover:scale-110 transition-transform duration-300 bg-green-500 p-3 rounded-full text-white">
+                          <i class="fab fa-whatsapp text-xl"></i>
+                      </a>
+                      <a href="#" class="hover:opacity-75 transform hover:scale-110 transition-transform duration-300 bg-black p-3 rounded-full text-white">
+                          <i class="fab fa-tiktok text-xl"></i>
+                      </a>
+                      <a href="#" class="hover:opacity-75 transform hover:scale-110 transition-transform duration-300 bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-full text-white">
+                          <i class="fab fa-instagram text-xl"></i>
+                      </a>
+                  </div>
+              </div>
+              <div class="bg-red-900 text-white p-4 text-center">
+                  <p class="flex items-center justify-center gap-2">
+                      <i class="far fa-copyright"></i> Copyright@2024 seblak cinta rasa
+                  </p>
+              </div>
+          </footer>
+      
+          <script>
+            function handleFileUpload(event) {
+              const file = event.target.files[0];
+              const placeholder = document.getElementById('upload-placeholder');
+              const preview = document.getElementById('preview-image');
+              
+              if (file) {
+                  if (file.type.startsWith('image/')) {
+                      const reader = new FileReader();
+                      reader.onload = function(e) {
+                          preview.src = e.target.result;
+                          preview.classList.remove('hidden');
+                          placeholder.classList.add('hidden');
+                      }
+                      reader.readAsDataURL(file);
+                  } else if (file.type === 'application/pdf') {
+                      placeholder.innerHTML = `
+                          <i class="fas fa-file-pdf w-8 h-8 text-red-600"></i>
+                          <p class="mt-2 text-sm text-gray-500">PDF terunggah: ${file.name}</p>
+                      `;
+                      preview.classList.add('hidden');
+                  }
+                  
+                  localStorage.setItem('buktiPembayaran', file.name);
+              }
+          }
+          
+            // Hamburger Menu Functionality
+      const menuBtn = document.getElementById('menu-btn');
+      const menuOverlay = document.getElementById('menu-overlay');
+      const nav = menuOverlay.querySelector('nav');
+      
+      function toggleMenu(open) {
+          if (open) {
+              menuBtn.classList.add('menu-open');
+              menuOverlay.classList.remove('hidden');
+              setTimeout(() => {
+                  nav.style.transform = 'translateX(0)';
+              }, 10);
+              document.body.classList.add('overflow-hidden');
+          } else {
+              menuBtn.classList.remove('menu-open');
+              nav.style.transform = 'translateX(100%)';
+              setTimeout(() => {
+                  menuOverlay.classList.add('hidden');
+              }, 300);
+              document.body.classList.remove('overflow-hidden');
+          }
+      }
+      
+      menuBtn.addEventListener('click', () => {
+          const willOpen = !menuBtn.classList.contains('menu-open');
+          toggleMenu(willOpen);
+      });
+      
+      // Close menu when clicking overlay
+      menuOverlay.addEventListener('click', (e) => {
+          if (e.target === menuOverlay) {
+              toggleMenu(false);
+          }
+      });
+      
+      // Payment method selection
+      function selectPayment(method) {
+          const qrisButton = document.getElementById('qrisButton');
+          const tunaiButton = document.getElementById('tunaiButton');
+          const uploadSection = document.getElementById('uploadSection');
+          
+          qrisButton.classList.remove('bg-gray-100', 'border-red-600');
+          tunaiButton.classList.remove('bg-gray-100', 'border-red-600');
+          
+          if (method === 'qris') {
+              qrisButton.classList.add('bg-gray-100', 'border-red-600');
+              uploadSection.classList.remove('hidden');
+          } else if (method === 'tunai') {
+              tunaiButton.classList.add('bg-gray-100', 'border-red-600');
+              uploadSection.classList.add('hidden');
+          }
+      }
+          </script>
 </body>
 </html>
