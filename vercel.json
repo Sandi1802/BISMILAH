@@ -1,3 +1,4 @@
+<<<<<<< HEAD
   {
     "builds": [
       {
@@ -12,4 +13,20 @@
       { "src": "/(.*)", "dest": "app.py" }
     ]
   }
+=======
+{
+    "builds": [
+      {
+        "src": "app.py",
+        "use": "@vercel/python",
+        "config": {
+          "installCommand": "pip install --no-cache-dir -r requirements.txt"
+        }
+      }
+    ],
+    "routes": [
+      { "src": "/(.*)", "dest": "app.py" }
+    ]
+  }
+>>>>>>> ed70613dcf4a5b5e99c051ccde87ba6fd019e6d1
   
